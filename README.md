@@ -53,4 +53,4 @@ Here are the steps for running the server from your localhost
 1. Install Node.js from <https://nodejs.org/en/>
 2. Clone the github repo <https://github.com/aldenvallestero/picloud>
 3. Open a terminal and go to the project root directory and proceed to src folder.
-4. Run the server by typing `npm run test` 
+4. Run the server by typing `npm run test`
