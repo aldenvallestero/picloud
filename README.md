@@ -29,6 +29,7 @@ The **src** contains all development files written in TypeScript. From there, so
 
 ## Endpoints
 **Create User**
+
 **POST** <http://localhost:8000/user/register>
 {
     email: string,
@@ -36,16 +37,19 @@ The **src** contains all development files written in TypeScript. From there, so
 }
 
 **Password Reset**
+
 **POST** <http://localhost:8000/user/password_reset>
 {
     email: string,
 }
 
-**Create User**
-**POST** <http://localhost:8000/user/register>
+**Generate Random Images**
+
+**GET** <http://localhost:8000/images>
+`Authorization: Basic email:password in base64`
 {
     email: string,
-    password: string
+    password: string,
 }
 
 ## Run on localhost
