@@ -17,6 +17,33 @@ const pexels_1 = require("pexels");
 const firebase_1 = __importDefault(require("../firebase"));
 const firestore_1 = require("firebase/firestore");
 class Images {
+    create(image_url, user_id, is_admin) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result;
+            if (is_admin) {
+                // STEP 1: Upload random image
+                yield cloudinary_1.default.v2.uploader.upload(image_url)
+                    .then((cloud_image) => __awaiter(this, void 0, void 0, function* () {
+                    // STEP 2: Record random image to images collection (database)
+                    yield (0, firestore_1.addDoc)((0, firestore_1.collection)((0, firestore_1.getFirestore)(firebase_1.default), 'images'), { hits: 1, url: cloud_image.url, user: user_id }).then((result) => __awaiter(this, void 0, void 0, function* () { yield (0, firestore_1.updateDoc)((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'images', result.id), { id: result.id }); }));
+                    result = true;
+                })).catch(() => { result = false; });
+            }
+            else {
+                // STEP 1: Upload random image
+                yield cloudinary_1.default.v2.uploader.upload(image_url)
+                    .then((cloud_image) => __awaiter(this, void 0, void 0, function* () {
+                    // STEP 2: Record random image to images collection (database)
+                    yield (0, firestore_1.addDoc)((0, firestore_1.collection)((0, firestore_1.getFirestore)(firebase_1.default), 'images'), { hits: 1, url: cloud_image.url, user: user_id }).then((result) => __awaiter(this, void 0, void 0, function* () { yield (0, firestore_1.updateDoc)((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'images', result.id), { id: result.id }); }));
+                    result = true;
+                })).catch(() => { result = false; });
+            }
+            return result;
+        });
+    }
+    // Description: Generate from 1 to 5 random images from pexels and store to cloudinary & firestore database
+    // Update: February 27, 2022
+    // Status: Stable
     generate(count, user_id) {
         return __awaiter(this, void 0, void 0, function* () {
             let i = 0;
@@ -40,12 +67,11 @@ class Images {
                 })).catch(() => { });
             }
             return images; // list of random & uploaded images
-            /*
-                image[0].id
-                image[0].src.original
-            */
         });
     }
+    // Description: Hide images to a specific user
+    // Update: February 27, 2022
+    // Status: Stable
     hide(user_id, image_id) {
         return __awaiter(this, void 0, void 0, function* () {
             let result;

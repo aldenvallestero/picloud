@@ -81,8 +81,8 @@ router
         // get a single image by id, hits should increase by one each endpoint call
         // download images from pexels
 
-        let id;
-        setDoc(doc(getFirestore(app), 'images', `image-${id}`));
+        // let id;
+        // setDoc(doc(getFirestore(app), 'images', `image-${id}`));
         // store images to cloudinary
         // store information to database
 

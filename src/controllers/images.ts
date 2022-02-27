@@ -1,6 +1,5 @@
 import cloudinary from 'cloudinary';
 import { createClient } from 'pexels';
-import randomInteger from 'random-int';
 
 import firebase from '../firebase';
 
@@ -15,7 +14,7 @@ import {
 
 class Images {
 
-    async create(image_url, user_id, is_admin) {
+    async create(image_url: string, user_id: string, is_admin: bool) {
 
         let result;
 
@@ -42,7 +41,7 @@ class Images {
 
                     result = true;
                 }).catch(() => { result = false });
-                
+
         }
 
         return result;

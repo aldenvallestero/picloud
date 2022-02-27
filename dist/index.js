@@ -26,7 +26,7 @@ const express_1 = __importDefault(require("express")); // framework
 const dotenv = __importStar(require("dotenv")); // environment variables storage as EVS
 dotenv.config({ path: __dirname + '/.env' }); // EVS path
 const cloudinary_1 = __importDefault(require("cloudinary"));
-// config
+// configs
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -38,11 +38,9 @@ cloudinary_1.default.config({
 });
 // routes
 const user_1 = __importDefault(require("./routes/user"));
-const profile_1 = __importDefault(require("./routes/profile"));
 const images_1 = __importDefault(require("./routes/images"));
 const admin_1 = __importDefault(require("./routes/admin"));
 app.use('/user', user_1.default);
-app.use('/profile', profile_1.default);
 app.use('/images', images_1.default);
 app.use('/admin', admin_1.default);
 const PORT = process.env.PORT || 8000;

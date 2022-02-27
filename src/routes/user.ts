@@ -10,9 +10,9 @@ router
     .post('/login', async (req, res) => {
         let { email, password } = req.body;
 
-        let user = await user.login(email, password);
+        let auth_user = await user.login(email, password);
         
-        if (user.exists) {
+        if (auth_user.exists) {
             return res.json({
                 status: 201,
                 data: user.data

@@ -82,5 +82,15 @@ class User {
             return result;
         });
     }
+    is_admin(user_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let is_admin;
+            yield getDoc((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'users', user_id))
+                .then(result => {
+                is_admin = result.data().admin;
+            });
+            return is_admin;
+        });
+    }
 }
 exports.default = new User();

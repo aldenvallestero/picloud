@@ -20,17 +20,17 @@ router
     // Updated: February 27, 2022
     .post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { email, password } = req.body;
-    let user = yield user.login(email, password);
-    if (user.exists) {
+    let auth_user = yield user_1.default.login(email, password);
+    if (auth_user.exists) {
         return res.json({
             status: 201,
-            data: user.data
+            data: user_1.default.data
         });
     }
     else {
         return res.json({
             status: 'failed',
-            data: user.data
+            data: user_1.default.data
         });
     }
 }))

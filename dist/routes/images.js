@@ -19,30 +19,36 @@ const upload = require('multer')();
 const user_1 = __importDefault(require("../controllers/user"));
 const images_1 = __importDefault(require("../controllers/images"));
 router
-    .post('/', (req, res) => {
-    let uri;
-    let owner; // only for admin
-    // download images from pexels
-    // store images to cloudinary
-    // store information to database
-    /*
-        {
-            limit: 5,
-            data: [
-                {
-                    id: 1,
-                    hits: 1,
-                    uri: '/cloud.url'
-                },
-                {
-                    id: 1,
-                    hits: 1,
-                    uri: '/cloud.url'
-                },
-            ]
+    .post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // authenticate user
+    let auth_user = yield user_1.default.login(req.headers.authorization.split(' ')[1]);
+    if (!(auth_user === null || auth_user === void 0 ? void 0 : auth_user.exists)) {
+        return res.json({
+            status: 401,
+            message: 'Incorrect credentials',
+            data: null,
+        });
+    }
+    else {
+        // get user role
+        let is_admin = yield user_1.default.is_admin(auth_user.data);
+        let result = yield images_1.default.create(req.body.url, req.body.owner, is_admin);
+        if (result) {
+            return res.json({
+                status: 201,
+                message: '',
+                data: null
+            });
         }
-    */
-})
+        else {
+            return res.json({
+                status: 401,
+                message: 'You are not authorized to create resource for other users',
+                data: null
+            });
+        }
+    }
+}))
     // Description: Generate random images
     // Updated: February 27, 2022
     // Status: Stable
@@ -78,8 +84,8 @@ router
     .get('/:id', (req, res) => {
     // get a single image by id, hits should increase by one each endpoint call
     // download images from pexels
-    let id;
-    setDoc(doc(getFirestore(app), 'images', `image-${id}`));
+    // let id;
+    // setDoc(doc(getFirestore(app), 'images', `image-${id}`));
     // store images to cloudinary
     // store information to database
     /*
