@@ -9,30 +9,36 @@ import images from '../controllers/images';
 
 router
 
-    .post('/', (req, res) => {
-        let uri;
-        let owner; // only for admin
-        // download images from pexels
-        // store images to cloudinary
-        // store information to database
+    .post('/', async (req, res) => {
+        // authenticate user
+        let auth_user = await user.login(req.headers.authorization.split(' ')[1]);
 
-        /*
-            {
-                limit: 5,
-                data: [
-                    {
-                        id: 1,
-                        hits: 1,
-                        uri: '/cloud.url'
-                    },
-                    {
-                        id: 1,
-                        hits: 1,
-                        uri: '/cloud.url'
-                    },
-                ]
+        if (!auth_user.exists) {
+            return res.json({
+                status: 401,
+                message: 'Incorrect credentials',
+                data: null,
+            })
+        } else {
+
+            // get user role
+            let is_admin = await user.is_admin(auth_user.data);
+            let result = await images.create(req.body.url, req.body.owner, is_admin);
+
+            if (result) {
+                return res.json({
+                    status: 201,
+                    message: '',
+                    data: null
+                });
+            } else {
+                return res.json({
+                status: 401,
+                message: 'You are not authorized to create resource for other users',
+                data: null
+            });
             }
-        */
+        }
     })
 
     // Description: Generate random images

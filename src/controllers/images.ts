@@ -15,6 +15,42 @@ import {
 
 class Images {
 
+    async create(image_url, user_id, is_admin) {
+
+        let result;
+
+        if (is_admin) {
+
+            // STEP 1: Upload random image
+            await cloudinary.v2.uploader.upload(image_url)
+                .then(async cloud_image => {
+                    
+                    // STEP 2: Record random image to images collection (database)
+                    await addDoc(collection(getFirestore(firebase), 'images'), { hits: 1, url: cloud_image.url, user: user_id }).then(async result => { await updateDoc(doc(getFirestore(firebase), 'images', result.id), { id: result.id }); });
+
+                    result = true;
+                }).catch(() => { result = false });
+
+        } else {
+            
+            // STEP 1: Upload random image
+            await cloudinary.v2.uploader.upload(image_url)
+                .then(async cloud_image => {
+                    
+                    // STEP 2: Record random image to images collection (database)
+                    await addDoc(collection(getFirestore(firebase), 'images'), { hits: 1, url: cloud_image.url, user: user_id }).then(async result => { await updateDoc(doc(getFirestore(firebase), 'images', result.id), { id: result.id }); });
+
+                    result = true;
+                }).catch(() => { result = false });
+                
+        }
+
+        return result;
+    }
+
+    // Description: Generate from 1 to 5 random images from pexels and store to cloudinary & firestore database
+    // Update: February 27, 2022
+    // Status: Stable
     async generate(count, user_id) {
 
         let i = 0;
@@ -46,13 +82,11 @@ class Images {
         }
 
         return images; // list of random & uploaded images
-
-        /*
-            image[0].id
-            image[0].src.original
-        */
     }
 
+    // Description: Hide images to a specific user
+    // Update: February 27, 2022
+    // Status: Stable
     async hide(user_id, image_id) {
 
         let result;
@@ -82,6 +116,7 @@ class Images {
 
         return result;
     }
+
 }
 
 export default new Images();

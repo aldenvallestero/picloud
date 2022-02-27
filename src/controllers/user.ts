@@ -79,6 +79,17 @@ class User {
 
         return result;
     }
+
+    async is_admin(user_id) {
+        let is_admin;
+
+        await getDoc(doc(getFirestore(firebase), 'users', user_id))
+            .then(result => {
+                is_admin = result.data().admin;
+            })
+
+        return is_admin;
+    }
     
 }
 
