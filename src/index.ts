@@ -4,7 +4,7 @@ dotenv.config({ path: __dirname+'/.env' }); // EVS path
 import multer from 'multer';                // file upload handler
 import cloudinary from 'cloudinary';
 
-// config
+// configs
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,12 +17,10 @@ cloudinary.config({
 
 // routes
 import user     from './routes/user';
-import profile  from './routes/profile';
 import images   from './routes/images';
 import admin    from './routes/admin';
 
 app.use('/user',    user);
-app.use('/profile', profile);
 app.use('/images',  images);
 app.use('/admin',   admin);
 
