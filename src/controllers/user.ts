@@ -17,9 +17,13 @@ import {
 class User {
 
     async password_reset(email: string): boolean {
+        let result = true;
+        
         await sendPasswordResetEmail(getAuth(firebase), email)
-            .then(() => { return true; } )
-            .catch(e => { return false; });
+            .then(() => { result = true; } )
+            .catch(e => { result = false; });
+
+            return result;
     }
     
     // check if the password contains all required characters

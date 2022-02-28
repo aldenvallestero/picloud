@@ -56,7 +56,7 @@ class Images {
 
         let images: any[] = [];
 
-        let client: string = createClient(process.env.PEXELS_API_KEY);
+        let client = createClient(process.env.PEXELS_API_KEY as string);
 
         while (i != count) {
             

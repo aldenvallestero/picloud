@@ -1,11 +1,9 @@
 import { Router, Request, Response } from 'express';
 const router = Router();
 
-const upload = require('multer')();
-
 // controllers
-import user from '../controllers/user';
-import images from '../controllers/images';
+import user     from '../controllers/user';
+import images   from '../controllers/images';
 
 router
 
@@ -58,7 +56,7 @@ router
         } else {
             // check if number of random images requiment is manually defined and should be less than or equal to 10.
             // else, default to 5.
-            let count = req.query.count && parseInt(req.query.count) && parseInt(req.query.count) <= 10 ? parseInt(req.query.count) : 5;
+            let count: number = req.query.count && parseInt(req.query.count) && parseInt(req.query.count) <= 10 ? parseInt(req.query.count) : 5;
 
             // generate images from pexels going to cloudinary and save to firestore database
             let image_list: any = await images.generate(count, auth_user.data);
@@ -77,8 +75,7 @@ router
     // Description: Generate random images from pexels and store to cloudinary & firestore database
     // Updated: February 27, 2022
     // Status: Under Development
-    .get('/:id', (req: Request, res: Response) => {
-    })
+    .get('/:id', (req: Request, res: Response) => { })
 
     // Description: Update image
     // Updated: February 27, 2022

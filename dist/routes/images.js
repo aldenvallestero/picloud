@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-const upload = require('multer')();
 // controllers
 const user_1 = __importDefault(require("../controllers/user"));
 const images_1 = __importDefault(require("../controllers/images"));
@@ -81,8 +80,7 @@ router
     // Description: Generate random images from pexels and store to cloudinary & firestore database
     // Updated: February 27, 2022
     // Status: Under Development
-    .get('/:id', (req, res) => {
-})
+    .get('/:id', (req, res) => { })
     // Description: Update image
     // Updated: February 27, 2022
     // Status: Under Development

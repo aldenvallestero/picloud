@@ -18,9 +18,11 @@ const firestore_1 = require("firebase/firestore");
 class User {
     password_reset(email) {
         return __awaiter(this, void 0, void 0, function* () {
+            let result = true;
             yield (0, auth_1.sendPasswordResetEmail)((0, auth_1.getAuth)(firebase_1.default), email)
-                .then(() => { return true; })
-                .catch(e => { return false; });
+                .then(() => { result = true; })
+                .catch(e => { result = false; });
+            return result;
         });
     }
     // check if the password contains all required characters
