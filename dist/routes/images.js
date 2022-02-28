@@ -22,7 +22,7 @@ router
     .post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // authenticate user
     let auth_user = yield user_1.default.login(req.headers.authorization.split(' ')[1]);
-    if (!(auth_user === null || auth_user === void 0 ? void 0 : auth_user.exists)) {
+    if (!auth_user.exists) {
         return res.json({
             status: 401,
             message: 'Incorrect credentials',
@@ -82,29 +82,6 @@ router
     // Updated: February 27, 2022
     // Status: Under Development
     .get('/:id', (req, res) => {
-    // get a single image by id, hits should increase by one each endpoint call
-    // download images from pexels
-    // let id;
-    // setDoc(doc(getFirestore(app), 'images', `image-${id}`));
-    // store images to cloudinary
-    // store information to database
-    /*
-        {
-            limit: 5,
-            data: [
-                {
-                    id: 1,
-                    hits: 1,
-                    uri: '/cloud.url'
-                },
-                {
-                    id: 1,
-                    hits: 1,
-                    uri: '/cloud.url'
-                },
-            ]
-        }
-    */
 })
     // Description: Update image
     // Updated: February 27, 2022
@@ -121,7 +98,8 @@ router
     // Updated: February 27, 2022
     // Status: Stable
     .delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let auth_user = yield user_1.default.login(req.headers.authorization.split(' ')[1]);
+    let credentials = req.headers.authorization.split(' ')[1];
+    let auth_user = yield user_1.default.login(credentials);
     if (!auth_user.exists) {
         return res.json({
             status: 401,

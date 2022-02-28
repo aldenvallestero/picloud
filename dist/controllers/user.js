@@ -67,7 +67,7 @@ class User {
     }
     register(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            let result;
+            let result = true;
             yield (0, auth_1.createUserWithEmailAndPassword)((0, auth_1.getAuth)(firebase_1.default), email, password)
                 .then(user => {
                 (0, firestore_1.setDoc)((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'users', user.user.uid), {
@@ -85,9 +85,10 @@ class User {
     is_admin(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
             let is_admin;
-            yield getDoc((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'users', user_id))
+            yield (0, firestore_1.getDoc)((0, firestore_1.doc)((0, firestore_1.getFirestore)(firebase_1.default), 'users', user_id))
                 .then(result => {
-                is_admin = result.data().admin;
+                var _a;
+                is_admin = (_a = result.data()) === null || _a === void 0 ? void 0 : _a.admin;
             });
             return is_admin;
         });

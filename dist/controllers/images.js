@@ -19,7 +19,7 @@ const firestore_1 = require("firebase/firestore");
 class Images {
     create(image_url, user_id, is_admin) {
         return __awaiter(this, void 0, void 0, function* () {
-            let result;
+            let result = true;
             if (is_admin) {
                 // STEP 1: Upload random image
                 yield cloudinary_1.default.v2.uploader.upload(image_url)

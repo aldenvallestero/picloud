@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 const router = Router();
 
 const upload = require('multer')();
@@ -9,9 +9,9 @@ import images from '../controllers/images';
 
 router
 
-    .post('/', async (req, res) => {
+    .post('/', async (req: Request, res: Response) => {
         // authenticate user
-        let auth_user = await user.login(req.headers.authorization.split(' ')[1]);
+        let auth_user: any = await user.login(req.headers.authorization.split(' ')[1]);
 
         if (!auth_user.exists) {
             return res.json({
@@ -22,8 +22,8 @@ router
         } else {
 
             // get user role
-            let is_admin = await user.is_admin(auth_user.data);
-            let result = await images.create(req.body.url, req.body.owner, is_admin);
+            let is_admin: any = await user.is_admin(auth_user.data);
+            let result: any = await images.create(req.body.url, req.body.owner, is_admin);
 
             if (result) {
                 return res.json({
@@ -44,10 +44,10 @@ router
     // Description: Generate random images
     // Updated: February 27, 2022
     // Status: Stable
-    .get('/', async (req, res) => {
+    .get('/', async (req: Request, res: Response) => {
 
         // authenticate user
-        let auth_user = await user.login(req.headers.authorization.split(' ')[1]);
+        let auth_user: any = await user.login(req.headers.authorization.split(' ')[1]);
 
         if (!auth_user.exists) {
             return res.json({
@@ -61,7 +61,7 @@ router
             let count = req.query.count && parseInt(req.query.count) && parseInt(req.query.count) <= 10 ? parseInt(req.query.count) : 5;
 
             // generate images from pexels going to cloudinary and save to firestore database
-            let image_list = await images.generate(count, auth_user.data);
+            let image_list: any = await images.generate(count, auth_user.data);
 
             return res.json({
                 status: 200,
@@ -77,38 +77,13 @@ router
     // Description: Generate random images from pexels and store to cloudinary & firestore database
     // Updated: February 27, 2022
     // Status: Under Development
-    .get('/:id', (req, res) => {
-        // get a single image by id, hits should increase by one each endpoint call
-        // download images from pexels
-
-        // let id;
-        // setDoc(doc(getFirestore(app), 'images', `image-${id}`));
-        // store images to cloudinary
-        // store information to database
-
-        /*
-            {
-                limit: 5,
-                data: [
-                    {
-                        id: 1,
-                        hits: 1,
-                        uri: '/cloud.url'
-                    },
-                    {
-                        id: 1,
-                        hits: 1,
-                        uri: '/cloud.url'
-                    },
-                ]
-            }
-        */
+    .get('/:id', (req: Request, res: Response) => {
     })
 
     // Description: Update image
     // Updated: February 27, 2022
     // Status: Under Development
-    .patch('/:id', (req, res) => {
+    .patch('/:id', (req: Request, res: Response) => {
         
         let image_id = req.params.id;
         
@@ -122,8 +97,10 @@ router
     // Description: Hide image
     // Updated: February 27, 2022
     // Status: Stable
-    .delete('/:id', async (req, res) => {
-        let auth_user = await user.login(req.headers.authorization.split(' ')[1]);
+    .delete('/:id', async (req: Request, res: Response) => {
+
+        let credentials: string = req.headers.authorization.split(' ')[1]
+        let auth_user: any = await user.login(credentials);
 
         if (!auth_user.exists) {
             return res.json({
@@ -132,7 +109,7 @@ router
                 data: null,
             });
         } else {
-            let has_hidden = await images.hide(auth_user.data, req.params.id);
+            let has_hidden: boolean = await images.hide(auth_user.data, req.params.id);
 
             if (has_hidden) {
                     return res.json({

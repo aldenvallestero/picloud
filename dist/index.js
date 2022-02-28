@@ -34,14 +34,12 @@ cloudinary_1.default.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_PUBLIC_KEY,
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
-    secure: true
+    secure: true,
 });
 // routes
 const user_1 = __importDefault(require("./routes/user"));
 const images_1 = __importDefault(require("./routes/images"));
-const admin_1 = __importDefault(require("./routes/admin"));
 app.use('/user', user_1.default);
 app.use('/images', images_1.default);
-app.use('/admin', admin_1.default);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log('Server starter running on port', PORT));

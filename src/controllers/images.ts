@@ -14,9 +14,9 @@ import {
 
 class Images {
 
-    async create(image_url: string, user_id: string, is_admin: bool) {
+    async create(image_url: string, user_id: string, is_admin: boolean) {
 
-        let result;
+        let result: boolean = true;
 
         if (is_admin) {
 
@@ -50,13 +50,13 @@ class Images {
     // Description: Generate from 1 to 5 random images from pexels and store to cloudinary & firestore database
     // Update: February 27, 2022
     // Status: Stable
-    async generate(count, user_id) {
+    async generate(count: number, user_id: string) {
 
-        let i = 0;
+        let i: number = 0;
 
-        let images = [];
+        let images: any[] = [];
 
-        let client = createClient(process.env.PEXELS_API_KEY);
+        let client: string = createClient(process.env.PEXELS_API_KEY);
 
         while (i != count) {
             
@@ -86,15 +86,15 @@ class Images {
     // Description: Hide images to a specific user
     // Update: February 27, 2022
     // Status: Stable
-    async hide(user_id, image_id) {
+    async hide(user_id: string, image_id: string) {
 
         let result;
 
         // get image
-        let image = await getDoc(doc(getFirestore(firebase), 'images', image_id));
+        let image: any = await getDoc(doc(getFirestore(firebase), 'images', image_id));
         
         // get user
-        let user = await getDoc(doc(getFirestore(firebase), 'users', user_id));
+        let user: any = await getDoc(doc(getFirestore(firebase), 'users', user_id));
 
         // check if admin
         if (user.data().admin) {

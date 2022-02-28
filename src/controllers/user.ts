@@ -11,23 +11,24 @@ import {
     getFirestore,
     doc,
     setDoc,
+    getDoc
 } from 'firebase/firestore';
 
 class User {
 
-    async password_reset(email) {
+    async password_reset(email: string): boolean {
         await sendPasswordResetEmail(getAuth(firebase), email)
             .then(() => { return true; } )
             .catch(e => { return false; });
     }
     
     // check if the password contains all required characters
-    password_validate(password) {
-        let length              = password.length < 8;
-        let upper_case          = !/[A-Z]/.test(password);
-        let lower_case          = !/[a-z]/.test(password);
-        let number              = !/\d/.test(password);
-        let special_character   = !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password);
+    password_validate(password: string) {
+        let length: boolean              = password.length < 8;
+        let upper_case: boolean          = !/[A-Z]/.test(password);
+        let lower_case: boolean          = !/[a-z]/.test(password);
+        let number: boolean              = !/\d/.test(password);
+        let special_character: boolean   = !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password);
 
         if (length)                 return 'Password length must be alteast 8 characters.';
         else if (upper_case)        return 'Please include at least 1 uppercase letter to your password.';
@@ -37,7 +38,7 @@ class User {
         else return true;
     }
 
-    async login(base64credentials) {
+    async login(base64credentials: string) {
         let credentials = Buffer.from(base64credentials, 'base64').toString('ascii');
         let [email, password] = credentials.split(':');
 
@@ -61,8 +62,8 @@ class User {
         return result;
     }
 
-    async register(email, password) {
-        let result;
+    async register(email: string, password: string) {
+        let result: boolean = true;
 
         await createUserWithEmailAndPassword(getAuth(firebase), email, password)
             .then(user => {
@@ -80,12 +81,12 @@ class User {
         return result;
     }
 
-    async is_admin(user_id) {
-        let is_admin;
+    async is_admin(user_id: string) {
+        let is_admin: any;
 
         await getDoc(doc(getFirestore(firebase), 'users', user_id))
             .then(result => {
-                is_admin = result.data().admin;
+                is_admin = result.data()?.admin;
             })
 
         return is_admin;

@@ -12,17 +12,15 @@ cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key:    process.env.CLOUDINARY_PUBLIC_KEY,
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
-    secure:     true
+    secure:     true,
 });
 
 // routes
 import user     from './routes/user';
 import images   from './routes/images';
-import admin    from './routes/admin';
 
 app.use('/user',    user);
 app.use('/images',  images);
-app.use('/admin',   admin);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log('Server starter running on port', PORT));

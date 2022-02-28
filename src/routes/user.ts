@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 const router = Router();
 
 // controllers
@@ -7,26 +7,7 @@ import user from '../controllers/user';
 router
 
     // Updated: February 27, 2022
-    .post('/login', async (req, res) => {
-        let { email, password } = req.body;
-
-        let auth_user = await user.login(email, password);
-        
-        if (auth_user.exists) {
-            return res.json({
-                status: 201,
-                data: user.data
-            });
-        } else {
-            return res.json({
-                status: 'failed',
-                data: user.data
-            });
-        }
-    })
-
-    // Updated: February 27, 2022
-    .post('/register', async (req, res) => {
+    .post('/register', async (req: Request, res) => {
 
         let { email, password } = req.body;
 
@@ -77,10 +58,10 @@ router
     })
 
     // Updated: February 26, 2022
-    .post('/password/reset', async (req, res) => {
+    .post('/password/reset', async (req: Request, res) => {
 
         let { email } = req.body;
-        let is_existing = await user.password_reset(email);
+        let is_existing: boolean = await user.password_reset(email);
 
         if (is_existing) {
             return res.json({

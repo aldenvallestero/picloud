@@ -18,23 +18,6 @@ const router = (0, express_1.Router)();
 const user_1 = __importDefault(require("../controllers/user"));
 router
     // Updated: February 27, 2022
-    .post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { email, password } = req.body;
-    let auth_user = yield user_1.default.login(email, password);
-    if (auth_user.exists) {
-        return res.json({
-            status: 201,
-            data: user_1.default.data
-        });
-    }
-    else {
-        return res.json({
-            status: 'failed',
-            data: user_1.default.data
-        });
-    }
-}))
-    // Updated: February 27, 2022
     .post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { email, password } = req.body;
     let password_validation_result = yield user_1.default.password_validate(password);
