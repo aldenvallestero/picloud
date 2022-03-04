@@ -7,7 +7,7 @@ import user from '../controllers/user';
 router
 
     // Updated: February 27, 2022
-    .post('/register', async (req: Request, res) => {
+    .post('/register', async (req: Request, res: Response) => {
 
         let { email, password } = req.body;
 

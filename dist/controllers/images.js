@@ -51,7 +51,7 @@ class Images {
             let client = (0, pexels_1.createClient)(process.env.PEXELS_API_KEY);
             while (i != count) {
                 // STEP 1: Generate ramdom image
-                yield client.photos.show({ id: Math.floor(Math.random() * 2000000) })
+                Promise.resolve(yield client.photos.show({ id: Math.floor(Math.random() * 2000000) }))
                     .then((random_image) => __awaiter(this, void 0, void 0, function* () {
                     // STEP 2: Upload random image
                     yield cloudinary_1.default.v2.uploader.upload(random_image.src.original)
@@ -63,8 +63,8 @@ class Images {
                             images.push({ id: result.id, hits: 1, url: cloud_image.url });
                             i++; // continue to next legal iteration
                         }));
-                    })).catch(() => { });
-                })).catch(() => { });
+                    })).catch((e) => { console.log(e); });
+                })).catch((e) => { console.log(e); });
             }
             return images; // list of random & uploaded images
         });

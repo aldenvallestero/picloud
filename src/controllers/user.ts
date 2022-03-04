@@ -16,7 +16,7 @@ import {
 
 class User {
 
-    async password_reset(email: string): boolean {
+    async password_reset(email: string) {
         let result = true;
         
         await sendPasswordResetEmail(getAuth(firebase), email)

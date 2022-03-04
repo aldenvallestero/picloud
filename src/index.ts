@@ -8,7 +8,7 @@ import cloudinary from 'cloudinary';
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-cloudinary.config({ 
+cloudinary.v2.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key:    process.env.CLOUDINARY_PUBLIC_KEY,
     api_secret: process.env.CLOUDINARY_SECRET_KEY,

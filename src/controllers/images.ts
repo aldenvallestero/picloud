@@ -61,7 +61,8 @@ class Images {
         while (i != count) {
             
             // STEP 1: Generate ramdom image
-            await client.photos.show({ id: Math.floor(Math.random() * 2000000) })
+
+            Promise.resolve(await client.photos.show({ id: Math.floor(Math.random() * 2000000) }))
                 .then(async random_image => {
 
                     // STEP 2: Upload random image
@@ -75,8 +76,8 @@ class Images {
                                     images.push({ id: result.id, hits: 1, url: cloud_image.url });
                                     i++; // continue to next legal iteration
                                 });
-                        }).catch(() => {});
-                }).catch(() => {});
+                        }).catch((e: any) => { console.log(e) });
+                }).catch((e: any) => { console.log(e) });
         
         }
 

@@ -19,8 +19,54 @@ const user_1 = __importDefault(require("../controllers/user"));
 const images_1 = __importDefault(require("../controllers/images"));
 router
     .post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let credentials = '';
+    if (req.headers.authorization) {
+        credentials = req.headers.authorization.split(' ')[1];
+    }
+    else {
+        return res.json({
+            status: 401,
+            message: 'Unauthorized access',
+            data: null,
+        });
+    }
     // authenticate user
-    let auth_user = yield user_1.default.login(req.headers.authorization.split(' ')[1]);
+    let auth_user = yield user_1.default.login(credentials);
+    // get user role
+    let is_admin = yield user_1.default.is_admin(auth_user.data);
+    let result = yield images_1.default.create(req.body.url, req.body.owner, is_admin);
+    if (result) {
+        return res.json({
+            status: 201,
+            message: '',
+            data: null
+        });
+    }
+    else {
+        return res.json({
+            status: 401,
+            message: 'You are not authorized to create resource for other users',
+            data: null
+        });
+    }
+}))
+    // Description: Generate random images
+    // Updated: February 27, 2022
+    // Status: Stable
+    .get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let credentials = '';
+    if (req.headers.authorization) {
+        credentials = req.headers.authorization.split(' ')[1];
+    }
+    else {
+        return res.json({
+            status: 401,
+            message: 'Unauthorized access',
+            data: null,
+        });
+    }
+    // authenticate user
+    let auth_user = yield user_1.default.login(credentials);
     if (!auth_user.exists) {
         return res.json({
             status: 401,
@@ -29,42 +75,10 @@ router
         });
     }
     else {
-        // get user role
-        let is_admin = yield user_1.default.is_admin(auth_user.data);
-        let result = yield images_1.default.create(req.body.url, req.body.owner, is_admin);
-        if (result) {
-            return res.json({
-                status: 201,
-                message: '',
-                data: null
-            });
-        }
-        else {
-            return res.json({
-                status: 401,
-                message: 'You are not authorized to create resource for other users',
-                data: null
-            });
-        }
-    }
-}))
-    // Description: Generate random images
-    // Updated: February 27, 2022
-    // Status: Stable
-    .get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // authenticate user
-    let auth_user = yield user_1.default.login(req.headers.authorization.split(' ')[1]);
-    if (!auth_user.exists) {
-        return res.json({
-            status: 'failed',
-            message: 'Incorrect credentials',
-            data: null,
-        });
-    }
-    else {
         // check if number of random images requiment is manually defined and should be less than or equal to 10.
         // else, default to 5.
-        let count = req.query.count && parseInt(req.query.count) && parseInt(req.query.count) <= 10 ? parseInt(req.query.count) : 5;
+        let count = 5;
+        // let count: number = parseInt(_count);
         // generate images from pexels going to cloudinary and save to firestore database
         let image_list = yield images_1.default.generate(count, auth_user.data);
         return res.json({
@@ -96,31 +110,32 @@ router
     // Updated: February 27, 2022
     // Status: Stable
     .delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let credentials = req.headers.authorization.split(' ')[1];
-    let auth_user = yield user_1.default.login(credentials);
-    if (!auth_user.exists) {
+    let credentials = '';
+    if (req.headers.authorization) {
+        credentials = req.headers.authorization.split(' ')[1];
+    }
+    else {
         return res.json({
             status: 401,
             message: 'Unauthorized access',
             data: null,
         });
     }
+    let auth_user = yield user_1.default.login(credentials);
+    let has_hidden = yield images_1.default.hide(auth_user.data, req.params.id);
+    if (has_hidden) {
+        return res.json({
+            status: 201,
+            message: '',
+            data: null,
+        });
+    }
     else {
-        let has_hidden = yield images_1.default.hide(auth_user.data, req.params.id);
-        if (has_hidden) {
-            return res.json({
-                status: 201,
-                message: '',
-                data: null,
-            });
-        }
-        else {
-            return res.json({
-                status: 401,
-                message: 'You do not own the image',
-                data: null,
-            });
-        }
+        return res.json({
+            status: 401,
+            message: 'You do not own the image',
+            data: null,
+        });
     }
 }));
 exports.default = router;

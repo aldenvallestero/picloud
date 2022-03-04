@@ -30,7 +30,7 @@ const cloudinary_1 = __importDefault(require("cloudinary"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-cloudinary_1.default.config({
+cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_PUBLIC_KEY,
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
