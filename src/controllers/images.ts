@@ -62,8 +62,8 @@ class Images {
             
             // STEP 1: Generate ramdom image
 
-            Promise.resolve(await client.photos.show({ id: Math.floor(Math.random() * 2000000) }))
-                .then(async random_image => {
+            await client.photos.show({ id: Math.floor(Math.random() * 2000000) })
+                .then(async (random_image: any) => {
 
                     // STEP 2: Upload random image
                     await cloudinary.v2.uploader.upload(random_image.src.original)

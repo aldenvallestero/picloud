@@ -51,10 +51,10 @@ class Images {
             let client = (0, pexels_1.createClient)(process.env.PEXELS_API_KEY);
             while (i != count) {
                 // STEP 1: Generate ramdom image
-                Promise.resolve(yield client.photos.show({ id: Math.floor(Math.random() * 2000000) }))
+                yield client.photos.show({ id: Math.floor(Math.random() * 2000000) })
                     .then((random_image) => __awaiter(this, void 0, void 0, function* () {
                     // STEP 2: Upload random image
-                    yield cloudinary_1.default.v2.uploader.upload(random_image.src.original)
+                    yield cloudinary_1.default.v2.uploader.upload(random_image['src']['original'])
                         .then((cloud_image) => __awaiter(this, void 0, void 0, function* () {
                         // STEP 3: Record random image to images collection (database)
                         yield (0, firestore_1.addDoc)((0, firestore_1.collection)((0, firestore_1.getFirestore)(firebase_1.default), 'images'), { hits: 1, url: cloud_image.url, user: user_id })
